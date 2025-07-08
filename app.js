@@ -16,10 +16,10 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Modelo
 const RitmoSchema = new mongoose.Schema({
-  X: { type: Number, required: true },
-  Y: { type: Number, required: true },
-  Z: { type: Number, required: true },
-  Ritmo: { type: Number, required: true },
+  X: { type: Number },
+  Y: { type: Number },
+  Z: { type: Number  },
+  Ritmo: { type: Number  },
   timestamp: { type: Date, default: Date.now }
 });
 
