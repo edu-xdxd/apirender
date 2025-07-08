@@ -19,7 +19,7 @@ const RitmoSchema = new mongoose.Schema({
   X: { type: Number },
   Y: { type: Number },
   Z: { type: Number  },
-  Ritmo: { type: Number  },
+  ritmo: { type: Number  },
   timestamp: { type: Date, default: Date.now }
 });
 
