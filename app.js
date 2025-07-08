@@ -24,7 +24,7 @@ const DatosSchema = new mongoose.Schema({
 
 // Modelo para ritmo
 const RitmoSchema = new mongoose.Schema({
-  ritmo: { type: Number },
+  ritmo: { type: Number, required: true },
   timestamp: { type: Date, default: Date.now }
 });
 
