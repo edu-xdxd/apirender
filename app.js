@@ -14,25 +14,41 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('Conectado a MongoDB'))
 .catch((err) => console.error('Error de conexión:', err));
 
-// Modelo
-const RitmoSchema = new mongoose.Schema({
+// Modelo para datos X, Y, Z
+const DatosSchema = new mongoose.Schema({
   X: { type: Number },
   Y: { type: Number },
-  Z: { type: Number  },
-  ritmo: { type: Number  },
+  Z: { type: Number },
   timestamp: { type: Date, default: Date.now }
 });
 
+// Modelo para ritmo
+const RitmoSchema = new mongoose.Schema({
+  ritmo: { type: Number },
+  timestamp: { type: Date, default: Date.now }
+});
+
+const Datos = mongoose.model('Datos', DatosSchema);
 const Ritmo = mongoose.model('Ritmo', RitmoSchema);
 
-// Endpoint para insertar
-app.post('/ritmo', async (req, res) => {
+// Endpoint para insertar datos y ritmo en colecciones separadas
+app.post('/datos', async (req, res) => {
   try {
     const { X, Y, Z, ritmo } = req.body;
-    console.log(X, Y, Z, ritmo);
-    const nuevoRitmo = new Ritmo({ X, Y, Z, ritmo });
+    console.log('Datos recibidos:', X, Y, Z, ritmo);
+    
+    // Crear documentos para cada colección
+    const nuevosDatos = new Datos({ X, Y, Z });
+    const nuevoRitmo = new Ritmo({ ritmo });
+    
+    // Guardar en ambas colecciones
+    await nuevosDatos.save();
     await nuevoRitmo.save();
-    res.status(201).json(nuevoRitmo);
+    
+    res.status(201).json({
+      datos: nuevosDatos,
+      ritmo: nuevoRitmo
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
